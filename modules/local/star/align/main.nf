@@ -53,7 +53,7 @@ process STAR_ALIGN {
         samtools view -h ${args5} |\\
         samtools sort ${args6} -@${task.cpus} -T ${prefix}_tmp -o ${prefix}.star.bam -
     
-    rm reads_1.fastq read_2.fastq
+    rm read_1.fastq read_2.fastq
     rm ${prefix}.Aligned.out.bam
     """
 

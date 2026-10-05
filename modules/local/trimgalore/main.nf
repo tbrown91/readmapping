@@ -42,14 +42,14 @@ process TRIMGALORE {
 
     def prefix = task.ext.prefix ?: "${meta.id}"
     """
-    samtools view -@ ${task.cpus} -O BAM ${cram} -o temp.bam 
+    samtools view -h -@ ${task.cpus} -O BAM ${cram} -o temp.bam 
     trim_galore \\
         ${args} \\
         --cores ${cores} \\
         --paired \\
         --output-format ubam \\
         temp.bam
-   samtools view -@ ${task.cpus} -C temp_val.bam \\
+   samtools view -h -@ ${task.cpus} -C temp_val.bam \\
         -o ${prefix}_val.cram
     rm temp.bam
     rm temp_val.bam
