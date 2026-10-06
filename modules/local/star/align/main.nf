@@ -26,34 +26,22 @@ process STAR_ALIGN {
     def args2 = task.ext.args2 ?: ''
     def args3 = task.ext.args3 ?: ""
     def args4 = task.ext.args4 ?: ''
-    def args5 = task.ext.args5 ?: ''
-    def args6 = task.ext.args6 ?: ''
-    // Prepare read group arguments if rglines are found, else, empty string
-    def rg_arg = rglines ? '-C ' + rglines.collect { line ->
-            // Add SM when not present to avoid errors from downstream tool (e.g. variant callers)
-            def l = line.contains("SM:") ? line
-                : meta.sample ? "${line}\tSM:${meta.sample}"
-                : "${line}\tSM:${meta.id}"
-            "-H '${l.replaceAll("\t", "\\\\t")}'"
-        }.join(' ')
-        : ''
     """
 
-    samtools cat ${args} -r "#:${range[0]}-${range[1]}" ${cram} |\\
-        samtools fastq ${args2} -1 read_1.fastq -2 read_2.fastq -0 /dev/null -s /dev/null
-
+    samtools view -b -h -o unaligned.bam ${cram}
     STAR \\
         --genomeDir $index \\
         --runThreadN $task.cpus \\
         --outFileNamePrefix $prefix. \\
-        $args3 \\
-        --readFilesIn read_1.fastq read_2.fastq
+        $args \\
+        --readFilesCommand "samtools view -h" \\
+        --readFilesIn unaligned.bam
 
-    samtools fixmate ${args4} ${prefix}.Aligned.out.bam - |\\
-        samtools view -h ${args5} |\\
-        samtools sort ${args6} -@${task.cpus} -T ${prefix}_tmp -o ${prefix}.star.bam -
+    samtools fixmate ${args2} ${prefix}.Aligned.out.bam - |\\
+        samtools view -h ${arg3} |\\
+        samtools sort ${args4} -@${task.cpus} -T ${prefix}_tmp -o ${prefix}.star.bam -
     
-    rm read_1.fastq read_2.fastq
+    rm unaligned.bam
     rm ${prefix}.Aligned.out.bam
     """
 
