@@ -100,6 +100,14 @@
                     "pattern": "^\\S+\\.fn?a(sta)?(\\.gz)?$",
                     "fa_icon": "far fa-file-code"
                 },
+                "gtf": {
+                    "type": "string",
+                    "description": "Path to GTF file describing transcript locations in fasta file.",
+                    "format": "file-path",
+                    "mimetype": "text/plain",
+                    "pattern": "^\\S+\\.gtf(\\.gz)?$",
+                    "fa_icon": "far fa-file-code"
+                },
                 "header": {
                     "type": "string",
                     "format": "file-path",

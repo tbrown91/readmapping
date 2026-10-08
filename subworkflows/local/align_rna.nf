@@ -12,6 +12,7 @@ workflow ALIGN_RNA {
     take:
     fasta    // channel: [ val(meta), /path/to/fasta ] reference_tuple
     reads    // channel: [ val(meta), /path/to/datafile ] rna_reads_path
+    ch_gtf
 
 
     main:
@@ -63,7 +64,7 @@ workflow ALIGN_RNA {
     ch_trim_zip = TRIMGALORE.out.zip
     ch_trim_log = TRIMGALORE.out.log
 
-    CRAM_MAP_ILLUMINA_RNA( ch_illumina.fasta, TRIMGALORE.out.cram, "star", params.short_reads_map_chunk_size )
+    CRAM_MAP_ILLUMINA_RNA( ch_illumina.fasta, TRIMGALORE.out.cram, "star", params.short_reads_map_chunk_size, ch_gtf )
     //
     // SUBWORKFLOW: Merge all alignment outputs by specimen
     //

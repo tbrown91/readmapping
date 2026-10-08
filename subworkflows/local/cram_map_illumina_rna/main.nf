@@ -13,6 +13,7 @@ workflow CRAM_MAP_ILLUMINA_RNA {
     ch_rna_cram          // Channel [meta, cram] OR [meta, [cram1, cram2, ..., cram_n]]
     val_aligner          // string: ["star"]
     val_cram_chunk_size  // integer: Number of CRAM slices per chunk for mapping
+    ch_gtf
 
     main:
     //
@@ -103,7 +104,6 @@ workflow CRAM_MAP_ILLUMINA_RNA {
         //
         // Module: Create star index for assembly. Pass empty gtf channel
         //
-        ch_gtf = channel.of([ [], [] ])
         STAR_GENOMEGENERATE(ch_assemblies,ch_gtf)
 
         ch_mapping_inputs = ch_cram_rg

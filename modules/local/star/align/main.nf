@@ -38,7 +38,7 @@ process STAR_ALIGN {
         --readFilesIn unaligned.bam
 
     samtools fixmate ${args2} ${prefix}.Aligned.out.bam - |\\
-        samtools view -h ${arg3} |\\
+        samtools view -h ${args3} |\\
         samtools sort ${args4} -@${task.cpus} -T ${prefix}_tmp -o ${prefix}.star.bam -
     
     rm unaligned.bam

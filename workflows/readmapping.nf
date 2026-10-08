@@ -45,6 +45,7 @@ workflow READMAPPING {
     ch_samplesheet
     ch_fasta
     ch_header
+    ch_gtf
 
     main:
     // Initialize an empty versions channel
@@ -84,7 +85,7 @@ workflow READMAPPING {
     //
 
     ALIGN_SHORT ( INPUT_CHECK.out.fasta, ch_reads.short_reads )
-    ALIGN_RNA ( INPUT_CHECK.out.fasta, ch_reads.rna_reads )
+    ALIGN_RNA ( INPUT_CHECK.out.fasta, ch_reads.rna_reads, ch_gtf )
 
     ALIGN_LONG (
         INPUT_CHECK.out.fasta,

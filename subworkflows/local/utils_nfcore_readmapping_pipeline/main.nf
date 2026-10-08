@@ -105,6 +105,7 @@ workflow PIPELINE_INITIALISATION {
     def checkPathParamList = [
         params.input,
         params.fasta,
+        params.gtf,
         params.pacbio_adapter,
         params.pacbio_adapter_yaml,
         params.pacbio_uli_adapter,
@@ -117,6 +118,7 @@ workflow PIPELINE_INITIALISATION {
     // Create channels from input paths
     ch_fasta = params.fasta ? channel.fromPath(params.fasta) : channel.empty().tap { error 'Genome fasta file not specified!' }
     ch_header = params.header ? channel.fromPath(params.header) : channel.empty()
+    ch_gtf = params.gtf ? channel.fromPath(params.gtf).map { gtf -> [ [], gtf ] } : channel.of([ [], [] ])
 
 
     //
@@ -135,6 +137,7 @@ workflow PIPELINE_INITIALISATION {
     samplesheet = ch_validated_samplesheet
     fasta       = ch_fasta
     header      = ch_header
+    gtf         = ch_gtf
     versions    = ch_versions
 }
 

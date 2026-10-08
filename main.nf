@@ -31,6 +31,7 @@ workflow SANGERTOL_READMAPPING {
     samplesheet // channel: samplesheet read in from --input
     fasta
     header
+    gtf
 
     main:
 
@@ -40,7 +41,8 @@ workflow SANGERTOL_READMAPPING {
     READMAPPING (
         samplesheet,
         fasta,
-        header
+        header,
+        gtf
     )
 }
 /*
@@ -73,7 +75,8 @@ workflow {
     SANGERTOL_READMAPPING (
         PIPELINE_INITIALISATION.out.samplesheet,
         PIPELINE_INITIALISATION.out.fasta,
-        PIPELINE_INITIALISATION.out.header
+        PIPELINE_INITIALISATION.out.header,
+        PIPELINE_INITIALISATION.out.gtf
     )
     //
     // SUBWORKFLOW: Run completion tasks
